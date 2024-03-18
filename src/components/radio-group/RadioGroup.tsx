@@ -1,7 +1,6 @@
 import { OptionType } from 'src/constants/articleProps';
 import { Text } from 'components/text';
 import { Option } from './Option';
-
 import styles from './RadioGroup.module.scss';
 
 type RadioGroupProps = {
@@ -10,6 +9,7 @@ type RadioGroupProps = {
 	selected: OptionType;
 	onChange?: (value: OptionType) => void;
 	title: string;
+	className?: string; // Добавляем опциональное свойство className
 };
 
 export const RadioGroup = (props: RadioGroupProps) => {

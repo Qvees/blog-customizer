@@ -28,3 +28,19 @@
 .arrow_open {
 	transform: rotate(0deg);
 }
+
+.arrow:hover{
+	background: #FFC802;
+}
+
+.container:hover{
+	background: #FFC802;
+}
+
+.container:active{
+	background: #787878;
+}
+
+.arrow:active{
+	background: #787878;
+}
