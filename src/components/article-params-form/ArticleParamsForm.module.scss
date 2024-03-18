@@ -4,12 +4,13 @@
 	width: 616px;
 	height: 100%;
 	overflow: scroll;
-	transform: translate(-616px);
-	transition: transform 0.5s ease;
+	transform: translateX(-616px); 
+  	transition: transform 0.5s ease; 
 }
 
 .container_open {
-	transform: translate(0);
+	transform: translateX(0);
+	transition: transform 0.5s ease; 
 }
 
 .form {
@@ -18,6 +19,7 @@
 	flex-direction: column;
 	box-sizing: border-box;
 	width: 616px;
+	gap:40px;
 	height: auto;
 	min-height: 100%;
 	padding: 50px 31px;
@@ -29,4 +31,14 @@
 	display: flex;
 	justify-content: space-between;
 	margin-top: auto;
+}
+
+.formTitle{
+font-family: 'Open Sans',sans-serif;
+font-size: 31px;
+font-weight: 800;
+letter-spacing: 0em;
+padding: 0px;
+text-align: left;
+
 }

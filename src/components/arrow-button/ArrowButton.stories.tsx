@@ -1,20 +1,21 @@
-import type { Meta, StoryObj } from '@storybook/react';
+// ArrowButton.stories.tsx
+import type { Meta, Story } from '@storybook/react';
+import { useState } from 'react';
+import { ArrowButton, ArrowButtonProps } from './ArrowButton';
 
-import { ArrowButton } from './ArrowButton';
-
-const meta: Meta<typeof ArrowButton> = {
+const meta: Meta<ArrowButtonProps> = {
 	component: ArrowButton,
+	title: 'Components/ArrowButton',
 };
 
 export default meta;
-type Story = StoryObj<typeof ArrowButton>;
 
-export const ArrowButtonStory: Story = {
-	render: () => {
-		return (
-			<>
-				<ArrowButton />
-			</>
-		);
-	},
+export const ArrowButtonStory: Story<ArrowButtonProps> = () => {
+	const [isOpen, setIsOpen] = useState(false);
+
+	const handleButtonClick = () => {
+		setIsOpen(!isOpen);
+	};
+
+	return <ArrowButton isOpen={isOpen} onClick={handleButtonClick} />;
 };
