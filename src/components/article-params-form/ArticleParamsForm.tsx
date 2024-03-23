@@ -16,6 +16,7 @@ import {
 	ArticleStateType,
 } from 'src/constants/articleProps';
 import { Text } from '../text/Text';
+import { Separator } from '../separator';
 
 interface ArticleParamsFormProps {
 	pageOption: ArticleStateType;
@@ -80,12 +81,12 @@ export const ArticleParamsForm = ({
 
 	const handleReset = () => {
 		setFormValues(defaultArticleState);
-		setPageOption(defaultArticleState); // Обновляем состояние родительского компонента
+		setPageOption(defaultArticleState);
 	};
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		setPageOption(formValues); // Передаем обновленные значения в родительский компонент
+		setPageOption(formValues);
 	};
 
 	return (
@@ -123,6 +124,7 @@ export const ArticleParamsForm = ({
 						onChange={handleFontColorChange}
 						title='Цвет шрифта:'
 					/>
+					<Separator></Separator>
 					<Select
 						selected={formValues.backgroundColor}
 						options={backgroundColors}
