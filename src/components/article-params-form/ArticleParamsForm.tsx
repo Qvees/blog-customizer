@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import clsx from 'clsx';
 import { ArrowButton } from 'components/arrow-button';
 import { Button } from 'components/button';
 import styles from './ArticleParamsForm.module.scss';
@@ -14,82 +15,97 @@ import {
 	defaultArticleState,
 	ArticleStateType,
 } from 'src/constants/articleProps';
+import { Text } from '../text/Text';
 
 interface ArticleParamsFormProps {
-	onSubmit: (formData: ArticleStateType) => void;
-	onReset: () => void;
+	pageOption: ArticleStateType;
+	setPageOption: (pageOption: ArticleStateType) => void;
 }
 
-export const ArticleParamsForm: React.FC<ArticleParamsFormProps> = ({
-	onSubmit,
-	onReset,
-}) => {
-	const [isOpen, setIsOpen] = useState(false);
-	const [formData, setFormData] = useState<ArticleStateType>({
-		fontFamilyOption: defaultArticleState.fontFamilyOption,
-		fontSizeOption: defaultArticleState.fontSizeOption,
-		fontColor: defaultArticleState.fontColor,
-		backgroundColor: defaultArticleState.backgroundColor,
-		contentWidth: defaultArticleState.contentWidth,
-	});
+export const ArticleParamsForm = ({
+	pageOption,
+	setPageOption,
+}: ArticleParamsFormProps) => {
+	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const [formValues, setFormValues] = useState<ArticleStateType>(pageOption);
+	const formRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		const handleOutsideClick = (event: MouseEvent) => {
+			if (formRef.current && !formRef.current.contains(event.target as Node)) {
+				setIsOpen(false);
+			}
+		};
+		document.addEventListener('mousedown', handleOutsideClick);
+
+		return () => {
+			document.removeEventListener('mousedown', handleOutsideClick);
+		};
+	}, []);
 
 	const handleFontFamilyChange = (option: OptionType) => {
-		setFormData((prevFormData) => ({
-			...prevFormData,
+		setFormValues((prevFormValues) => ({
+			...prevFormValues,
 			fontFamilyOption: option,
 		}));
 	};
 
 	const handleFontSizeChange = (option: OptionType) => {
-		setFormData((prevFormData) => ({
-			...prevFormData,
+		setFormValues((prevFormValues) => ({
+			...prevFormValues,
 			fontSizeOption: option,
 		}));
 	};
 
 	const handleFontColorChange = (option: OptionType) => {
-		setFormData((prevFormData) => ({
-			...prevFormData,
+		setFormValues((prevFormValues) => ({
+			...prevFormValues,
 			fontColor: option,
 		}));
 	};
 
 	const handleBackgroundColorChange = (option: OptionType) => {
-		setFormData((prevFormData) => ({
-			...prevFormData,
+		setFormValues((prevFormValues) => ({
+			...prevFormValues,
 			backgroundColor: option,
 		}));
 	};
 
 	const handleContentWidthChange = (option: OptionType) => {
-		setFormData((prevFormData) => ({
-			...prevFormData,
+		setFormValues((prevFormValues) => ({
+			...prevFormValues,
 			contentWidth: option,
 		}));
 	};
-	const handleArrowButtonClick = () => {
-		setIsOpen((prevIsOpen) => !prevIsOpen);
-	};
 
 	const handleReset = () => {
-		setFormData(defaultArticleState);
-		onReset();
+		setFormValues(defaultArticleState);
+		setPageOption(defaultArticleState); // Обновляем состояние родительского компонента
 	};
 
-	const handleSubmit = () => {
-		onSubmit(formData);
+	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		setPageOption(formValues); // Передаем обновленные значения в родительский компонент
 	};
+
 	return (
 		<>
-			<ArrowButton isOpen={isOpen} onClick={handleArrowButtonClick} />
+			<ArrowButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
 			<aside
-				className={`${styles.container} ${
-					isOpen ? styles.container_open : ''
-				}`}>
-				<form className={styles.form}>
-					<h2 className={styles.formTitle}>Задайте параметры</h2>
+				ref={formRef}
+				className={clsx(styles.container, {
+					[styles.container_open]: isOpen,
+				})}>
+				<form
+					className={styles.form}
+					onSubmit={handleSubmit}
+					onReset={handleReset}>
+					<Text size={31} weight={800} align='left' family='open-sans'>
+						Задайте параметры
+					</Text>
+
 					<Select
-						selected={formData.fontFamilyOption}
+						selected={formValues.fontFamilyOption}
 						options={fontFamilyOptions}
 						onChange={handleFontFamilyChange}
 						title='Шрифт:'
@@ -97,31 +113,31 @@ export const ArticleParamsForm: React.FC<ArticleParamsFormProps> = ({
 					<RadioGroup
 						name='fontSize'
 						options={fontSizeOptions}
-						selected={formData.fontSizeOption}
+						selected={formValues.fontSizeOption}
 						onChange={handleFontSizeChange}
 						title='Размер шрифта:'
 					/>
 					<Select
-						selected={formData.fontColor}
+						selected={formValues.fontColor}
 						options={fontColors}
 						onChange={handleFontColorChange}
 						title='Цвет шрифта:'
 					/>
 					<Select
-						selected={formData.backgroundColor}
+						selected={formValues.backgroundColor}
 						options={backgroundColors}
 						onChange={handleBackgroundColorChange}
 						title='Фоновый цвет:'
 					/>
 					<Select
-						selected={formData.contentWidth}
+						selected={formValues.contentWidth}
 						options={contentWidthArr}
 						onChange={handleContentWidthChange}
 						title='Ширина контента:'
 					/>
 					<div className={styles.bottomContainer}>
-						<Button title='Reset' type='button' onClick={handleReset} />
-						<Button title='Apply' type='button' onClick={handleSubmit} />
+						<Button title='Сбросить' type='reset' />
+						<Button title='Применить' type='submit' />
 					</div>
 				</form>
 			</aside>

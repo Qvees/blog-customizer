@@ -19,7 +19,7 @@
 	flex-direction: column;
 	box-sizing: border-box;
 	width: 616px;
-	gap:40px;
+	gap:50px;
 	height: auto;
 	min-height: 100%;
 	padding: 50px 31px;
@@ -31,14 +31,4 @@
 	display: flex;
 	justify-content: space-between;
 	margin-top: auto;
-}
-
-.formTitle{
-font-family: 'Open Sans',sans-serif;
-font-size: 31px;
-font-weight: 800;
-letter-spacing: 0em;
-padding: 0px;
-text-align: left;
-
 }

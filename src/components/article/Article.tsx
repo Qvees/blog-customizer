@@ -1,33 +1,10 @@
-import clsx from 'clsx';
 import plane from 'src/images/plane.png';
 import { Text } from 'components/text';
 import styles from './Article.module.scss';
-import { ArticleStateType } from 'src/constants/articleProps';
 
-interface ArticleProps {
-	formData: ArticleStateType;
-}
-
-export const Article: React.FC<ArticleProps> = ({ formData }) => {
-	// Деструктуризируем значения стилей из formData
-	const {
-		fontFamilyOption,
-		fontSizeOption,
-		fontColor,
-		backgroundColor,
-		contentWidth,
-	} = formData;
-
-	const articleStyles = {
-		fontFamily: fontFamilyOption.value,
-		fontSize: fontSizeOption.value,
-		color: fontColor.value,
-		backgroundColor: backgroundColor.value,
-		width: contentWidth.value,
-	};
-
+export const Article = () => {
 	return (
-		<article className={clsx(styles.article)} style={articleStyles}>
+		<article className={styles.article}>
 			{' '}
 			{/* Применяем стили к article */}
 			<Text as='h1' size={45} weight={800} uppercase dynamicLite>
